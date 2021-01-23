@@ -2,16 +2,19 @@ grammar jcc;
 
 // Syntax Specification ==> Context-free Grammar
 prog : main_class class_declaration*;
-main_class : 'class' IDENTIFIER '{' main_method '}';
+main_class : 'class' identifier '{' main_method '}';
 main_method : 'public' 'static' 'void' 'main' '(' 'String' '[' ']' IDENTIFIER ')' '{' statement '}';
 
 class_declaration : 'class' IDENTIFIER '{' class_inner_body '}';
 class_inner_body : field_declaration* method_declaration* ;
 
 field_declaration
-	: type_of_variable IDENTIFIER SC;
+	: type_of_variable identifier SC;
 
-method_declaration : type_of_variable IDENTIFIER '(' parameter_list ')' '{' method_inner_body '}';
+identifier:
+	IDENTIFIER;
+
+method_declaration : type_of_variable identifier '(' parameter_list ')' '{' method_inner_body '}';
 
 method_inner_body
 	: field_declaration*
@@ -19,62 +22,72 @@ method_inner_body
 	return_statement;
 
 statement
-	: '{' statement* '}'
+	: '{' statement* '}' #blockStatement
+	| 'do' statement 'while' '(' expression ')' SC #doWhileStatement
 	| 'while' '(' expression ')'
-		statement
-	| 'do' statement 'while' '(' expression ')' SC
+		statement #whileStatement
 	| 'if' '(' expression ')'
 		statement
 	 ('else'
-		statement)?
-	| IDENTIFIER '=' expression SC
-	| IDENTIFIER '[' expression ']' '=' expression SC
-	| 'System.out.println' '(' expression ')' SC
-	| 'break' SC
-	| 'continue' SC ;
+		statement)? #ifStatement
+	| identifier '=' expression SC #assignStatement
+	| identifier '[' expression ']' '=' expression SC #assignArrayStatement
+	| 'System.out.println' '(' expression ')' SC #printStatement
+	| 'break' SC #breakStatement
+	| 'continue' SC #breakStatement
+	;
 return_statement
 	: 'return' expression SC ;
 
 parameter_list : parameters? ;
 parameters : parameter ( ',' parameter )*;
-parameter : type_of_variable IDENTIFIER;
+parameter : type_of_variable identifier;
 
 expression
-	:   expression '.' ( 'length' ('(' ')')? | 'charAt''(' IDENTIFIER ')' )
-	|	expression '.' IDENTIFIER call_a_method
-    |	'-' expression
-    |	expression '[' expression ']'
-    |   'new' 'int' '[' expression ']'
-    |   'new' IDENTIFIER '(' ')'
-    |   expression '*'  expression
-    |   expression '/'  expression
-    |   expression '+'  expression
-    |   expression '-'  expression
-    |   expression '<'  expression
-    |   expression '==' expression
-    |   expression '&&' expression
-    |   expression '||' expression
-    |	'!' expression
-    |	INTEGER
-    |   BOOLEAN
-    |   CHAR
-    |	STRING
-    |   IDENTIFIER
-    |   '(' expression ')'
-    |   'this' ;
+	:   '(' expression ')' #braquetedExpression
+	|   expression '.' 'length' '(' ')' #stringLengthExpression
+	|	expression '.' 'charAt''(' expression ')' #stringCharAtExpression
+	|   'new' identifier '(' ')' #newCallExpression
+	|	expression '.' call_a_method ('.' call_a_method)?	#methodCallExpression
+	| 	expression '.' IDENTIFIER #variableCallExpression
+    |	'-' expression #minusExpression
+    |   'new' 'int' '[' expression ']' #arrayCreateExpression
+    |	expression '[' expression ']'  #arraySelectExpression
+    | 	expression '.' 'length' #arrayLengthExpression
+    |   expression '*' expression #multiplicationExpression
+    |	expression '/' expression #divisionExpression
+    |   expression '+' expression #sumExpression
+    |   expression '-' expression #substractionExpression
+    |   expression '<' expression #lessThanExpression
+    |   expression '==' expression #equalExpression
+    |   expression ('&&' || '||' ) expression #comparisonExpression
+    |	'!' expression #notExpression
+    |	integer #integerExpression
+    |	bool #boolExpression
+	|	cha #charExpression
+    |	string #stringExpression
+    |  	identifier #identifierExpression
+    |   'this' #thisExpression;
 
 call_a_method
-	: '(' (expression (',' expression)*)? ')' ;
+	: identifier '(' (expression (',' expression)*)? ')' ;
+
+integer
+	:   INTEGER;
+bool:
+       	BOOLEAN;
+cha:
+	   	CHAR;
+string:
+		STRING;
 
 type_of_variable
-	: intentifier_type
+	: identifier
 	| int_type
 	| int_array_type
 	| char_type
 	| boolean_type
 	| string_type ;
-intentifier_type
-	: IDENTIFIER;
 int_type
 	: 'int';
 int_array_type
@@ -103,6 +116,7 @@ STRING
 	: '"' (~('"'|'\\') )* '"' ;
 
 SC  : ';';
-IDENTIFIER : ('a'..'z'|'A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')* ;
+IDENTIFIER
+	: ('a'..'z'|'A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')* ;
 WS
 	: [ \t\r\n]+ -> skip;
