@@ -1,4 +1,4 @@
-grammar grammar_specification;
+grammar jcc;
 
 // Syntax Specification ==> Context-free Grammar
 prog : main_class class_declaration*;
