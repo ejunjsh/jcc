@@ -30,7 +30,6 @@ public class CodeGenerationMain {
 	public static void main(String[] args) {
 
 		// presentation
-		System.out.println("\n*** CC1 - PA3 - ap222ze ***");
 		System.out.println(
 				"\nThe following program does: \n\t ->Syntax Tree build \n\t ->Symbol Table construction \n\t ->Type checking \n\t ->Code Generation ");
 

@@ -11,7 +11,6 @@ public class JccInterpreter {
 		String programName = null;		
 		
 		// presentation
-				System.out.println("\n*** CC1 - PA3 - ap222ze ***");
 				System.out.println(
 						"\nThe following program does: \n\t ->Code interpretation ");
 
