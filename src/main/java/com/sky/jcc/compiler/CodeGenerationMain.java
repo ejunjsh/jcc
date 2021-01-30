@@ -99,7 +99,7 @@ public class CodeGenerationMain {
 		codeGenerationVisitor.visit(tree);		
 		// store the generated code to disk
 		codeGenerationVisitor.getClassfile().print();
-		FileUtils.objectToFile(codeGenerationVisitor.getClassfile(), fileName+".tjc");
+		FileUtils.objectToFile(codeGenerationVisitor.getClassfile(), fileName+".jcc");
 	}
 	
 	private static boolean validJavaFile(String fileName) {

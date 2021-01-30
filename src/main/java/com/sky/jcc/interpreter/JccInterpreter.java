@@ -5,7 +5,7 @@ package com.sky.jcc.interpreter;
  * Main for code execution
  * */
 
-public class TJInterpreter {
+public class JccInterpreter {
 	
 	public static void main(String[] args){
 		String programName = null;		
@@ -24,8 +24,8 @@ public class TJInterpreter {
 			System.exit(0);
 		}
 		// test the .java file
-		if (!validTjcFile(programName)) {
-			System.out.println("\nOnly .tjc files valid");
+		if (!validJccFile(programName)) {
+			System.out.println("\nOnly .jcc files valid");
 			System.exit(0);
 		}		
 		
@@ -36,8 +36,8 @@ public class TJInterpreter {
 		stackMachine.startExecution();		
 	}
 	
-	private static boolean validTjcFile(String fileName) {
-		return fileName.toLowerCase().endsWith(".tjc");
+	private static boolean validJccFile(String fileName) {
+		return fileName.toLowerCase().endsWith(".jcc");
 	}
 
 }

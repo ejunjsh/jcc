@@ -13,7 +13,7 @@ import java.net.URL;
 
 
 /*
- * Read the .tjc and create the ClassFile
+ * Read the .jcc and create the ClassFile
  */
 
 public class ClassRepository {
@@ -24,7 +24,7 @@ public class ClassRepository {
 	public ClassRepository(String fileName){
 		this.fileName = fileName;
 		// file to load
-		URL location = TJInterpreter.class.getProtectionDomain().getCodeSource().getLocation();
+		URL location = JccInterpreter.class.getProtectionDomain().getCodeSource().getLocation();
 		File temp = new File("");
 		String path = temp.getAbsolutePath();
 		path.replace("\\", "\\\\");
