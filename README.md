@@ -2,11 +2,11 @@
 
 a java compiler and interpreter
 
-## compile
+## compile jcc
 
     mvn compile
 
-## compile java
+## compile RecursiveSum.java
 
     mvn exec:java -Dexec.mainClass=com.sky.jcc.compiler.CodeGenerationMain -Dexec.args=RecursiveSum.java
 
@@ -64,7 +64,7 @@ output:
     
     Program compiled into: RecursiveSum.jcc
 
-## interprete run 
+## interprete run RecursiveSum.jcc
 
     mvn exec:java -Dexec.mainClass=com.sky.jcc.interpreter.JccInterpreter -Dexec.args=RecursiveSum.jcc
 
